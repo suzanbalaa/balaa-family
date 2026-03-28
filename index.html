@@ -1,588 +1,286 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BALAA — Family Leadership Team</title>
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f1a30">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BALAA">
-<link rel="apple-touch-icon" href="icon-192.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --navy: #1a2744;
-    --navy-deep: #0f1a30;
-    --gold: #c9a84c;
-    --gold-light: #e2c47a;
-    --cream: #f5f0e8;
-    --cream-mid: #ede6d6;
-    --white: #ffffff;
-    --red-soft: #fdf0f0;
-    --red-border: #e8a0a0;
-    --green-soft: #f0fdf4;
-    --green-border: #86c9a0;
-    --text-dark: #1a2744;
-    --text-mid: #4a5568;
-    --text-light: #8a9ab0;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
+:root {
+  --navy: #1a2744;
+  --navy-deep: #0f1a30;
+  --gold: #c9a84c;
+  --gold-light: #e2c47a;
+  --cream: #f5f0e8;
+  --cream-mid: #ede6d6;
+  --white: #ffffff;
+  --text-dark: #1a2744;
+  --text-mid: #4a5568;
+  --text-light: #8a9ab0;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  html { scroll-behavior: smooth; }
+body {
+  font-family:'Lato',sans-serif;
+  background:var(--cream);
+  color:var(--text-dark);
+}
 
-  body {
-    font-family: 'Lato', sans-serif;
-    background: var(--cream);
-    color: var(--text-dark);
-    font-weight: 300;
-    overflow-x: hidden;
-    padding-bottom: calc(var(--safe-bottom) + 1rem);
-  }
+/* Header */
+.site-header {
+  background: var(--navy-deep);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
 
-  /* ── INSTALL BANNER ── */
-  #install-banner {
-    display: none;
-    position: fixed;
-    bottom: calc(var(--safe-bottom) + 12px);
-    left: 12px; right: 12px;
-    background: var(--navy-deep);
-    border: 1px solid rgba(201,168,76,0.4);
-    border-radius: 14px;
-    padding: 1rem 1.1rem;
-    z-index: 999;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    align-items: center;
-    gap: 0.9rem;
-    animation: slideUp 0.35s ease;
-  }
-  #install-banner.show { display: flex; }
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .install-text { flex: 1; }
-  .install-text strong {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-    display: block;
-    margin-bottom: 0.15rem;
-  }
-  .install-text span {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.3;
-  }
-  .install-btn {
-    background: var(--gold);
-    color: var(--navy-deep);
-    border: none;
-    border-radius: 8px;
-    padding: 0.55rem 1rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    white-space: nowrap;
-    font-weight: 600;
-  }
-  .install-dismiss {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.3);
-    font-size: 1.2rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0.2rem;
-  }
+.brand-name {
+  font-family:'Cinzel',serif;
+  color:white;
+  letter-spacing:0.35em;
+}
 
-  /* iOS install tip */
-  #ios-tip {
-    display: none;
-    position: fixed;
-    bottom: calc(var(--safe-bottom) + 12px);
-    left: 12px; right: 12px;
-    background: var(--navy-deep);
-    border: 1px solid rgba(201,168,76,0.4);
-    border-radius: 14px;
-    padding: 1rem 1.1rem;
-    z-index: 999;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    animation: slideUp 0.35s ease;
-  }
-  #ios-tip.show { display: block; }
-  #ios-tip p {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.5;
-    margin-bottom: 0.6rem;
-  }
-  #ios-tip strong { color: var(--gold); }
-  #ios-tip button {
-    background: none;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: rgba(255,255,255,0.4);
-    border-radius: 6px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.65rem;
-    cursor: pointer;
-    font-family: 'Lato', sans-serif;
-  }
+.brand-sub {
+  color:var(--gold);
+  font-size:0.7rem;
+}
 
-  /* ── HEADER ── */
-  .site-header {
-    background: var(--navy-deep);
-    padding: calc(var(--safe-top) + 2rem) 1.5rem 1.5rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .site-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%);
-  }
+/* Sections */
+.section {
+  padding:2.5rem 1.25rem;
+  max-width:700px;
+  margin:auto;
+}
 
-  .logo-wrap { position: relative; display: inline-block; margin-bottom: 1rem; }
-  .logo-svg { width: 80px; height: 80px; display: block; }
+.section-title {
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  margin-bottom:0.5rem;
+}
 
-  .brand-name {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(1.8rem, 7vw, 2.6rem);
-    letter-spacing: 0.35em;
-    color: var(--white);
-    font-weight: 400;
-    line-height: 1;
-    margin-bottom: 0.4rem;
-  }
-  .brand-sub {
-    font-family: 'Lato', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-transform: uppercase;
-    font-weight: 400;
-  }
+.section-desc {
+  text-align:center;
+  color:var(--text-mid);
+  font-size:0.85rem;
+}
 
-  /* ── SECTION WRAPPER ── */
-  .section { padding: 2.5rem 1.25rem; max-width: 700px; margin: 0 auto; }
+/* Divider */
+.gold-divider {
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0.3;
+}
 
-  .section-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0.4rem;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.4rem, 5vw, 1.9rem);
-    font-weight: 600;
-    text-align: center;
-    color: var(--navy);
-    line-height: 1.2;
-    margin-bottom: 0.3rem;
-  }
-  .section-desc {
-    text-align: center;
-    font-size: 0.82rem;
-    color: var(--text-mid);
-    letter-spacing: 0.02em;
-    margin-bottom: 2rem;
-  }
-  .gold-rule { width: 40px; height: 1px; background: var(--gold); margin: 0.6rem auto 1.6rem; }
+/* Grid */
+.challenge-grid {
+  display:grid;
+  gap:1rem;
+}
 
-  /* ── MAP STRIP ── */
-  .map-strip { background: var(--navy); padding: 1.5rem 1.25rem; }
-  .map-locations {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  .map-location { text-align: center; }
-  .loc-code { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--gold); display: block; margin-bottom: 0.2rem; }
-  .loc-role { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--white); display: block; line-height: 1.1; }
-  .loc-place { font-size: 0.7rem; color: var(--gold-light); display: block; letter-spacing: 0.05em; margin-top: 0.1rem; }
-  .map-divider { width: 1px; height: 36px; background: rgba(201,168,76,0.3); }
-  @media (max-width: 380px) { .map-divider { display: none; } .map-locations { flex-direction: column; gap: 1rem; } }
+@media(min-width:540px){
+  .challenge-grid { grid-template-columns:1fr 1fr; }
+}
 
-  /* ── BEFORE / NOW ── */
-  .challenge-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2rem; }
-  @media (min-width: 540px) { .challenge-grid { grid-template-columns: 1fr 1fr; } }
+/* Cards */
+.card-now {
+  background:#f0fdf4;
+  padding:1.2rem;
+  border-radius:10px;
+}
 
-  .card-before, .card-now { border-radius: 12px; padding: 1.4rem 1.2rem; }
-  .card-before { background: var(--red-soft); border: 1px solid var(--red-border); }
-  .card-now { background: var(--green-soft); border: 1px solid var(--green-border); }
+/* Org Section */
+.org-section {
+  background:var(--navy-deep);
+  padding:2.5rem 1.25rem;
+}
 
-  .card-badge {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.9rem;
-    display: inline-block;
-    padding: 0.25rem 0.65rem;
-    border-radius: 20px;
-  }
-  .card-before .card-badge { background: rgba(220,80,80,0.1); color: #c44040; }
-  .card-now .card-badge { background: rgba(40,160,80,0.1); color: #267a40; }
+.org-section .section-title,
+.org-section .section-desc {
+  color:white;
+}
 
-  .card-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.9rem; line-height: 1.2; }
-  .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
-  .card-list li { font-size: 0.8rem; color: var(--text-mid); padding-left: 1rem; position: relative; line-height: 1.4; }
-  .card-list li::before { content: ''; position: absolute; left: 0; top: 0.45em; width: 5px; height: 5px; border-radius: 50%; }
-  .card-before .card-list li::before { background: #c44040; }
-  .card-now .card-list li::before { background: #267a40; }
-  .card-team-label { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 0.7rem; display: block; }
+/* Leader */
+.leader-bar {
+  background: rgba(201,168,76,0.12);
+  border:1px solid rgba(201,168,76,0.3);
+  border-radius:10px;
+  padding:1.1rem 1.2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+}
 
-  /* ── OUTCOMES ── */
-  .outcomes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  @media (min-width: 480px) { .outcomes-grid { grid-template-columns: repeat(4, 1fr); } }
+.leader-bar > div:first-child {
+  display:flex;
+  flex-direction:column;
+  gap:0.25rem;
+}
 
-  .outcome-card { background: var(--white); border: 1px solid var(--cream-mid); border-radius: 10px; padding: 1rem 0.75rem; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
-  .outcome-card:active { transform: scale(0.97); }
-  .outcome-icon { font-size: 1.3rem; display: block; margin-bottom: 0.5rem; }
-  .outcome-title { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--navy); font-weight: 600; display: block; margin-bottom: 0.25rem; }
-  .outcome-desc { font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.02em; }
+.leader-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;
+  color:white;
+}
 
-  /* ── ORG SECTION ── */
-  .org-section { background: var(--navy-deep); padding: 2.5rem 1.25rem 3rem; position: relative; overflow: hidden; }
-  .org-section::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; }
-  .org-section .section-title { color: var(--white); }
-  .org-section .section-desc { color: rgba(255,255,255,0.45); }
+/* Teams */
+.teams-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.75rem;
+}
 
-  .leader-bar { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3); border-radius: 10px; padding: 1.1rem 1.4rem; display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; position: relative; }
-  .leader-bar::after { content: ''; position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); width: 1px; height: 1.5rem; background: rgba(201,168,76,0.4); }
-  .leader-role-tag { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.25em; color: var(--gold); display: block; margin-bottom: 0.2rem; }
-  .leader-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--white); line-height: 1; margin-bottom: 0.15rem; }
-  .leader-members { margin-left: auto; display: flex; flex-direction: column; gap: 0.2rem; }
-  .leader-members span { font-size: 0.75rem; color: rgba(255,255,255,0.6); letter-spacing: 0.03em; display: flex; align-items: center; gap: 0.4rem; }
-  .leader-members span::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.6; }
+@media(min-width:540px){
+  .teams-grid { grid-template-columns:repeat(3,1fr); }
+}
 
-  .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 1.5rem; }
-  @media (min-width: 540px) { .teams-grid { grid-template-columns: repeat(4, 1fr); } }
+.team-card {
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
 
-  .team-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1.1rem 1rem; transition: background 0.2s, border-color 0.2s; }
-  .team-card:active { background: rgba(255,255,255,0.08); }
-  .team-card.anchor { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.35); }
-  .team-label { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.22em; color: var(--gold); display: block; margin-bottom: 0.35rem; }
-  .team-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--white); line-height: 1.1; margin-bottom: 0.15rem; }
-  .team-role { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.15em; color: rgba(201,168,76,0.7); display: block; margin-bottom: 0.7rem; }
-  .team-members-list { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.85rem; }
-  .team-members-list li { font-size: 0.72rem; color: rgba(255,255,255,0.6); padding-left: 0.85rem; position: relative; line-height: 1.3; }
-  .team-members-list li::before { content: ''; position: absolute; left: 0; top: 0.45em; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.5; }
-  .team-card.anchor .team-members-list li::before { opacity: 0.9; }
-  .team-count { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.25); text-align: right; display: block; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 0.6rem; }
-  .team-card.anchor .team-count { color: rgba(201,168,76,0.5); }
+.team-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  color:white;
+}
 
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
-  .stat-block { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.9rem 0.5rem; text-align: center; }
-  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--gold-light); line-height: 1; display: block; margin-bottom: 0.3rem; }
-  .stat-label { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+.team-members-list {
+  list-style:none;
+  margin-top:0.5rem;
+}
 
-  .org-tagline { margin-top: 2rem; text-align: center; font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.28em; color: rgba(201,168,76,0.45); }
+.team-members-list li {
+  font-size:0.72rem;
+  color:rgba(255,255,255,0.6);
+  margin-bottom:0.25rem;
+}
 
-  .gold-divider { width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.4; }
+/* Stats */
+.stats-row {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0.5rem;
+  margin-top:1rem;
+}
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .animate { animation: fadeUp 0.6s ease both; }
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-  .delay-4 { animation-delay: 0.4s; }
+.stat-block {
+  text-align:center;
+  padding:0.8rem;
+  background:rgba(255,255,255,0.04);
+  border-radius:8px;
+}
+
+.stat-num {
+  font-size:1.8rem;
+  color:var(--gold-light);
+}
 </style>
 </head>
+
 <body>
 
-<!-- ═══ INSTALL BANNER (Android / Chrome) ═══ -->
-<div id="install-banner">
-  <div class="install-text">
-    <strong>ADD TO HOME SCREEN</strong>
-    <span>Install BALAA as an app on your phone</span>
-  </div>
-  <button class="install-btn" id="install-btn">Install</button>
-  <button class="install-dismiss" id="install-dismiss">✕</button>
-</div>
-
-<!-- ═══ iOS TIP ═══ -->
-<div id="ios-tip">
-  <p>To install on iPhone: tap <strong>Share ⎙</strong> then <strong>"Add to Home Screen"</strong></p>
-  <button onclick="document.getElementById('ios-tip').classList.remove('show')">Got it</button>
-</div>
-
-<!-- ═══════════════════ HEADER ═══════════════════ -->
 <header class="site-header">
-  <div class="logo-wrap animate">
-    <svg class="logo-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="40" cy="40" r="39" stroke="#c9a84c" stroke-width="1"/>
-      <circle cx="40" cy="8"  r="3.5" fill="#c9a84c" opacity="0.8"/>
-      <circle cx="72" cy="40" r="3.5" fill="#c9a84c" opacity="0.8"/>
-      <circle cx="40" cy="72" r="3.5" fill="#c9a84c" opacity="0.8"/>
-      <circle cx="8"  cy="40" r="3.5" fill="#c9a84c" opacity="0.8"/>
-      <rect x="24" y="24" width="32" height="32" stroke="#c9a84c" stroke-width="0.7" opacity="0.5"/>
-      <circle cx="24" cy="24" r="2.5" fill="#c9a84c" opacity="0.6"/>
-      <circle cx="56" cy="24" r="2.5" fill="#c9a84c" opacity="0.6"/>
-      <circle cx="56" cy="56" r="2.5" fill="#c9a84c" opacity="0.6"/>
-      <circle cx="24" cy="56" r="2.5" fill="#c9a84c" opacity="0.6"/>
-      <path d="M40 31 L49 40 L40 49 L31 40 Z" stroke="#c9a84c" stroke-width="0.7" fill="rgba(201,168,76,0.12)"/>
-      <circle cx="40" cy="40" r="2.5" fill="#c9a84c" opacity="0.9"/>
-      <line x1="40" y1="8" x2="40" y2="31" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
-      <line x1="72" y1="40" x2="49" y2="40" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
-      <line x1="40" y1="72" x2="40" y2="49" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
-      <line x1="8" y1="40" x2="31" y2="40" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
-    </svg>
-  </div>
-  <div class="brand-name animate delay-1">BALAA</div>
-  <div class="brand-sub animate delay-2">Family Leadership Team</div>
+  <div class="brand-name">BALAA</div>
+  <div class="brand-sub">Family Leadership Team</div>
 </header>
 
-<!-- ═══ MAP ═══ -->
-<div class="map-strip">
-  <div class="map-locations">
-    <div class="map-location">
-      <span class="loc-code">CA</span>
-      <span class="loc-role">2 Children</span>
-      <span class="loc-place">Canada</span>
-    </div>
-    <div class="map-divider"></div>
-    <div class="map-location">
-      <span class="loc-code">SA</span>
-      <span class="loc-role">1 Child</span>
-      <span class="loc-place">Saudi Arabia</span>
-    </div>
-    <div class="map-divider"></div>
-    <div class="map-location">
-      <span class="loc-code">AE</span>
-      <span class="loc-role">Parents</span>
-      <span class="loc-place">Sharjah, UAE</span>
-    </div>
-  </div>
-</div>
-
-<div class="gold-divider"></div>
-
-<!-- ═══ CHALLENGE ═══ -->
 <section class="section">
-  <p class="section-label">The Challenge</p>
   <h2 class="section-title">How Our Team Solves It</h2>
   <p class="section-desc">Effective remote family leadership across continents</p>
-  <div class="gold-rule"></div>
 
   <div class="challenge-grid">
-    <div class="card-before animate delay-1">
-      <span class="card-badge">BEFORE</span>
-      <div class="card-heading">Fragmented Remote Leadership</div>
-      <ul class="card-list">
-        <li>Fragmented communication</li>
-        <li>Delayed decision-making</li>
-        <li>Confusion and misalignment</li>
-        <li>Reactive coordination</li>
-        <li>Inconsistent visibility</li>
-      </ul>
-    </div>
-    <div class="card-now animate delay-2">
-      <span class="card-badge">NOW</span>
-      <div class="card-heading">Aligned Family Leadership Team</div>
-      <span class="card-team-label">BALAA FAMILY LEADERSHIP TEAM</span>
-      <ul class="card-list">
+    <div class="card-now">
+      <h3>Aligned Leadership</h3>
+      <ul>
         <li>Coordinated decisions</li>
         <li>Structured communication</li>
-        <li>Clear roles and accountability</li>
-        <li>Proactive planning</li>
-        <li>Single source of truth</li>
+        <li>Clear accountability</li>
       </ul>
-    </div>
-  </div>
-
-  <p class="section-label" style="margin-top:1.8rem; margin-bottom:1rem;">Outcome</p>
-  <div class="outcomes-grid">
-    <div class="outcome-card animate delay-1">
-      <span class="outcome-icon">✓</span>
-      <span class="outcome-title">Clarity</span>
-      <span class="outcome-desc">Who does what</span>
-    </div>
-    <div class="outcome-card animate delay-2">
-      <span class="outcome-icon">⚡</span>
-      <span class="outcome-title">Speed</span>
-      <span class="outcome-desc">Faster decisions</span>
-    </div>
-    <div class="outcome-card animate delay-3">
-      <span class="outcome-icon">⟳</span>
-      <span class="outcome-title">Consistency</span>
-      <span class="outcome-desc">Aligned actions</span>
-    </div>
-    <div class="outcome-card animate delay-4">
-      <span class="outcome-icon">◈</span>
-      <span class="outcome-title">Calm</span>
-      <span class="outcome-desc">No chaos</span>
     </div>
   </div>
 </section>
 
 <div class="gold-divider"></div>
 
-<!-- ═══ ORG CHART ═══ -->
+<!-- TEAM STRUCTURE MOVED HERE -->
 <section class="org-section">
-  <div style="max-width:700px; margin:0 auto;">
-    <p class="section-label animate">Team Structure</p>
-    <h2 class="section-title animate delay-1">Balaa Family Leadership</h2>
-    <div class="gold-rule"></div>
 
-    <div class="leader-bar animate delay-1">
+  <div class="section">
+    <h2 class="section-title">Balaa Family Leadership</h2>
+    <p class="section-desc">Team Structure</p>
+
+    <div class="leader-bar">
       <div>
-        <span class="leader-role-tag">TEAM PARENTS · LEADER</span>
-        <div class="leader-name">Salim</div>        <div class="leader-name">Rowa</div>
-        <span class="team-role">ANCHOR UNIT</span>
+        <span style="color:var(--gold); font-size:0.6rem;">TEAM PARENTS</span>
+        <div class="leader-name">Salim</div>
+        <div class="leader-name">Rowa</div>
       </div>
-      <div class="leader-members">
-        <span>Salim</span>
-        <span>Rowa</span>
+      <div style="color:rgba(255,255,255,0.6); font-size:0.8rem;">
+        Anchor Unit
       </div>
     </div>
 
-    <div class="teams-grid animate delay-2">
+    <div class="teams-grid">
       <div class="team-card">
-        <span class="team-label">TEAM</span>
         <div class="team-name">Rasha</div>
-        <span class="team-role">LEADER</span>
         <ul class="team-members-list">
-          <li>Hassan</li><li>Rasha</li><li>Lyana</li><li>Aiden</li>
+          <li>Hassan</li>
+          <li>Rasha</li>
+          <li>Lyana</li>
+          <li>Aiden</li>
         </ul>
-        <span class="team-count">4 members</span>
       </div>
+
       <div class="team-card">
-        <span class="team-label">TEAM</span>
         <div class="team-name">Suzan</div>
-        <span class="team-role">LEADER</span>
         <ul class="team-members-list">
-          <li>Karim</li><li>Suzan</li><li>Samer</li>
+          <li>Karim</li>
+          <li>Suzan</li>
+          <li>Samer</li>
         </ul>
-        <span class="team-count">3 members</span>
       </div>
+
       <div class="team-card">
-        <span class="team-label">TEAM</span>
         <div class="team-name">Abdullatif</div>
-        <span class="team-role">LEADER</span>
         <ul class="team-members-list">
-          <li>Hiyam</li><li>Lana</li>
+          <li>Hiyam</li>
+          <li>Lana</li>
         </ul>
-        <span class="team-count">3 members</span>
-      </div>      
+      </div>
     </div>
 
-    <div class="stats-row animate delay-3">
-      <div class="stat-block"><span class="stat-num">4</span><span class="stat-label">Teams</span></div>
-      <div class="stat-block"><span class="stat-num">12</span><span class="stat-label">Members</span></div>
-      <div class="stat-block"><span class="stat-num">4</span><span class="stat-label">Leaders</span></div>
-      <div class="stat-block"><span class="stat-num">1</span><span class="stat-label">Family</span></div>
+    <div class="stats-row">
+      <div class="stat-block"><div class="stat-num">3</div><div>Teams</div></div>
+      <div class="stat-block"><div class="stat-num">12</div><div>Members</div></div>
+      <div class="stat-block"><div class="stat-num">4</div><div>Leaders</div></div>
+      <div class="stat-block"><div class="stat-num">1</div><div>Family</div></div>
     </div>
 
-    <p class="org-tagline animate delay-4">Four Families · One Vision · United Leadership</p>
   </div>
-</section>
-<!-- ═══ CORE PRINCIPLES ═══ -->
-<section class="section">
-  <p class="section-label">Core Principles</p>
-  <h2 class="section-title">Operating Guidelines</h2>
-  <p class="section-desc">Shared standards for decision-making and collaboration</p>
-  <div class="gold-rule"></div>
 
-  <div class="challenge-grid">
-    <div class="card-now">
-      <div class="card-heading">Faith-centered conduct</div>
-      <ul class="card-list">
-        <li>Align decisions with Islamic values</li>
-        <li>Uphold integrity, fairness, accountability</li>
-      </ul>
-    </div>
-
-    <div class="card-now">
-      <div class="card-heading">Clear, no-drama collaboration</div>
-      <ul class="card-list">
-        <li>Communicate openly and directly</li>
-        <li>No gossip or passive-aggressive behavior</li>
-        <li>Address issues calmly and constructively</li>
-      </ul>
-    </div>
-
-    <div class="card-now">
-      <div class="card-heading">Money as a tool, not a goal</div>
-      <ul class="card-list">
-        <li>Use wealth to enable purpose</li>
-        <li>Avoid status-driven decisions</li>
-      </ul>
-    </div>
-
-    <div class="card-now">
-      <div class="card-heading">Unity over ego</div>
-      <ul class="card-list">
-        <li>Prioritize team success over personal pride</li>
-        <li>Let go of the need for credit</li>
-      </ul>
-    </div>
-
-    <div class="card-now">
-      <div class="card-heading">Loyalty and support</div>
-      <ul class="card-list">
-        <li>Support each other, especially under pressure</li>
-        <li>Build trust through consistency</li>
-      </ul>
-    </div>
-  </div> 
 </section>
 
 <div class="gold-divider"></div>
-<script>
-  // ── Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
 
-  // ── Android install prompt
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('install-banner').classList.add('show');
-  });
+<section class="section">
+  <h2 class="section-title">Operating Principles</h2>
+  <div class="card-now">
+    <ul>
+      <li>Faith-centered conduct</li>
+      <li>Clear communication</li>
+      <li>Unity over ego</li>
+      <li>Loyalty and support</li>
+    </ul>
+  </div>
+</section>
 
-  document.getElementById('install-btn').addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('install-banner').classList.remove('show');
-  });
-
-  document.getElementById('install-dismiss').addEventListener('click', () => {
-    document.getElementById('install-banner').classList.remove('show');
-  });
-
-  // ── iOS tip (show once)
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isStandalone = window.navigator.standalone;
-  const shownBefore = sessionStorage.getItem('ios-tip-shown');
-  if (isIOS && !isStandalone && !shownBefore) {
-    setTimeout(() => {
-      document.getElementById('ios-tip').classList.add('show');
-      sessionStorage.setItem('ios-tip-shown', '1');
-    }, 2500);
-  }
-</script>
 </body>
 </html>
